@@ -1,0 +1,382 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Custom Properties ─────────────────────────────── */
+:root {
+    --vellum: #F5ECD7;
+    --vellum-deep: #EDE0C4;
+    --tan: #D4C4A8;
+    --tan-deep: #C4B090;
+    --ink: #2E2A25;
+    --ink-mid: #4A443C;
+    --ink-light: #7A7168;
+    --rust: #A0522D;
+    --rust-light: #C4693A;
+    --rust-pale: #E8C9B0;
+    --cream: #FAF6EE;
+    --shadow-warm: rgba(46, 42, 37, 0.12);
+}
+
+/* ── Base ──────────────────────────────────────────── */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--vellum);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* ── Typography ────────────────────────────────────── */
+.font-serif-display {
+    font-family: 'Fraunces', serif;
+}
+
+.font-mono-label {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ── Grain Overlay ─────────────────────────────────── */
+.grain-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+}
+
+/* ── Scroll-linked page depth ──────────────────────── */
+.page-depth-gradient {
+    background: linear-gradient(to bottom,
+            #FAF6EE 0%,
+            #F5ECD7 15%,
+            #EDE0C4 40%,
+            #E2D4B4 65%,
+            #D4C4A8 85%,
+            #C8B898 100%);
+}
+
+/* ── Animations ────────────────────────────────────── */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+        filter: blur(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0px);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-24px);
+        filter: blur(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+        filter: blur(0px);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(24px);
+        filter: blur(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+        filter: blur(0px);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pulseChevron {
+
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translateY(6px);
+        opacity: 1;
+    }
+}
+
+@keyframes shimmerRust {
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@keyframes breathe {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+
+    50% {
+        transform: scale(1.01);
+        opacity: 1;
+    }
+}
+
+@keyframes rotateSlowly {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Scroll-reveal base state ──────────────────────── */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(4px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+}
+
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-28px);
+    filter: blur(4px);
+    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-left.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0px);
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateX(28px);
+    filter: blur(4px);
+    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-right.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0px);
+}
+
+.reveal-delay-1 {
+    transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+    transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+    transition-delay: 0.3s;
+}
+
+.reveal-delay-4 {
+    transition-delay: 0.45s;
+}
+
+.reveal-delay-5 {
+    transition-delay: 0.6s;
+}
+
+/* ── Chevron pulse ─────────────────────────────────── */
+.chevron-pulse {
+    animation: pulseChevron 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* ── Rust link style ───────────────────────────────── */
+.rust-link {
+    color: var(--rust);
+    position: relative;
+    text-decoration: none;
+    font-style: italic;
+}
+
+.rust-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--rust);
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rust-link:hover::after {
+    width: 100%;
+}
+
+/* ── Photo collage card ────────────────────────────── */
+.photo-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    box-shadow:
+        0 2px 8px rgba(46, 42, 37, 0.18),
+        0 0 0 1px rgba(46, 42, 37, 0.06);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.photo-card:hover {
+    transform: scale(1.025) rotate(0.3deg);
+    box-shadow:
+        0 8px 24px rgba(46, 42, 37, 0.22),
+        0 0 0 1px rgba(46, 42, 37, 0.1);
+}
+
+/* ── Quote pull ────────────────────────────────────── */
+.pull-quote {
+    border-left: 2px solid var(--rust);
+    padding-left: 1.25rem;
+    color: var(--ink-mid);
+}
+
+/* ── Service tile ──────────────────────────────────── */
+.service-tile {
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(46, 42, 37, 0.1);
+    border-radius: 4px;
+    transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+    backdrop-filter: blur(4px);
+}
+
+.service-tile:hover {
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 6px 20px rgba(46, 42, 37, 0.1);
+    transform: translateY(-2px);
+}
+
+/* ── CTA form ──────────────────────────────────────── */
+.form-input {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(46, 42, 37, 0.2);
+    border-radius: 2px;
+    color: var(--ink);
+    transition: border-color 0.3s ease, background 0.3s ease;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--rust);
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.form-input::placeholder {
+    color: var(--ink-light);
+    font-style: italic;
+}
+
+/* ── Interstitial stat ─────────────────────────────── */
+.stat-numeral {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(5rem, 14vw, 11rem);
+    line-height: 0.9;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+}
+
+/* ── Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--vellum);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--tan-deep);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-light);
+}
+
+/* ── Selection ─────────────────────────────────────── */
+::selection {
+    background: var(--rust-pale);
+    color: var(--ink);
+}
+
+/* ── Decorative tape strip ─────────────────────────── */
+.tape-strip {
+    position: absolute;
+    width: 48px;
+    height: 14px;
+    background: rgba(212, 196, 168, 0.6);
+    border-radius: 1px;
+    transform: rotate(-3deg);
+    box-shadow: 0 1px 3px rgba(46, 42, 37, 0.1);
+}
+
+/* ── Hover image sepia lift ────────────────────────── */
+.sepia-img {
+    filter: sepia(40%) brightness(0.95) contrast(1.05);
+    transition: filter 0.6s ease;
+}
+
+.sepia-img:hover {
+    filter: sepia(15%) brightness(1.02) contrast(1.02);
+}
+
+/* ── Responsive ────────────────────────────────────── */
+@media (max-width: 768px) {
+    .stat-numeral {
+        font-size: clamp(4rem, 18vw, 6rem);
+    }
+}
