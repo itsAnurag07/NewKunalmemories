@@ -148,7 +148,7 @@ export default function TributeWall() {
 
         {/* Tribute form */}
         {showForm && (
-          <div className="reveal mb-12 max-w-xl">
+          <div className="reveal is-visible mb-12 max-w-xl">
             <div className="service-tile p-8 rounded-sm">
               <div className="tape-strip absolute -top-2 left-8" />
               {submitted ? (
@@ -255,7 +255,7 @@ export default function TributeWall() {
           {tributes.map((tribute, index) => (
             <div
               key={tribute.id}
-              className={`reveal reveal-delay-${Math.min(index + 1, 5)} service-tile p-6 rounded-sm flex flex-col justify-between`}
+              className={`reveal is-visible reveal-delay-${Math.min(index + 1, 5)} service-tile p-6 rounded-sm flex flex-col justify-between`}
               style={{ transform: `rotate(${(index % 3 - 1) * 0.5}deg)` }}>
 
               {/* Tape strip */}
