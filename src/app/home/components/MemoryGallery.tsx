@@ -217,7 +217,7 @@ export default function MemoryGallery() {
           {galleryItems.map((item, index) => (
             <div
               key={index}
-              className={`reveal reveal-delay-${Math.min(index + 1, 5)} photo-card relative group cursor-pointer`}
+              className={`reveal is-visible reveal-delay-${Math.min(index + 1, 5)} photo-card relative group cursor-pointer`}
               style={{ transform: `rotate(${(index % 3 - 1) * 0.8}deg)` }}
               onClick={() => openLightbox(index)}>
               <img
