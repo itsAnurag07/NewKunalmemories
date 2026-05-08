@@ -1,48 +1,48 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { supabase } from '@/lib/supabaseClient';
 
 interface Tribute {
-  id: number;
+  id: string;
   name: string;
   relationship: string;
   message: string;
-  date: string;
+  created_at: string;
 }
 
-// Placeholder tributes — will be replaced with Supabase data
-const placeholderTributes: Tribute[] = [
-  {
-    id: 1,
-    name: 'A Friend',
-    relationship: 'Close Friend',
-    message: 'Kunal was the kind of person who made everyone around him feel special. His smile could light up a room, and his laughter was contagious. I will miss him dearly.',
-    date: '2026',
-  },
-  {
-    id: 2,
-    name: 'A Colleague',
-    relationship: 'Work Friend',
-    message: 'Working with Kunal was a privilege. He brought positivity and energy to everything he did. His dedication and spirit inspired all of us.',
-    date: '2026',
-  },
-  {
-    id: 3,
-    name: 'A Neighbor',
-    relationship: 'Family Friend',
-    message: 'Kunal was always there to help. Whether it was a small favor or a big challenge, he never hesitated. The neighborhood won\'t be the same without him.',
-    date: '2026',
-  },
-];
+// Placeholder removed, fetching from Supabase
 
 export default function TributeWall() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [tributes, setTributes] = useState<Tribute[]>(placeholderTributes);
+  const [tributes, setTributes] = useState<Tribute[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ name: '', relationship: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
+    // 1. Fetch initial tributes
+    const fetchTributes = async () => {
+      const { data, error } = await supabase
+        .from('tributes')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (data && !error) {
+        setTributes(data as Tribute[]);
+      }
+    };
+    fetchTributes();
+
+    // 2. Subscribe to realtime inserts
+    const subscription = supabase
+      .channel('public:tributes')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'tributes' }, payload => {
+        setTributes(prev => [payload.new as Tribute, ...prev]);
+      })
+      .subscribe();
+
+    // 3. Setup intersection observer for animations
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -52,26 +52,36 @@ export default function TributeWall() {
       { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
     );
     sectionRef?.current?.querySelectorAll('.reveal, .reveal-left, .reveal-right')?.forEach((el) => observer?.observe(el));
-    return () => observer?.disconnect();
+    
+    return () => {
+      observer?.disconnect();
+      supabase.removeChannel(subscription);
+    };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock submit — will connect to Supabase later
-    const newTribute: Tribute = {
-      id: tributes.length + 1,
-      name: form.name || 'Anonymous',
-      relationship: form.relationship || 'Friend',
-      message: form.message,
-      date: new Date().getFullYear().toString(),
-    };
-    setTributes([newTribute, ...tributes]);
-    setForm({ name: '', relationship: '', message: '' });
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setShowForm(false);
-    }, 3000);
+    if (!form.name || !form.message) return;
+
+    const { error } = await supabase.from('tributes').insert([
+      {
+        name: form.name,
+        relationship: form.relationship || 'Friend',
+        message: form.message,
+      }
+    ]);
+
+    if (!error) {
+      setForm({ name: '', relationship: '', message: '' });
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setShowForm(false);
+      }, 3000);
+    } else {
+      console.error('Error submitting tribute:', error);
+      alert('There was an error submitting your tribute. Please try again.');
+    }
   };
 
   return (
@@ -232,7 +242,7 @@ export default function TributeWall() {
                   </div>
 
                   <p className="font-mono-label text-[10px] text-ink-light italic">
-                    Supabase integration coming soon — tributes will be saved permanently
+                    Your tribute will be shared immediately with the family.
                   </p>
                 </form>
               )}
