@@ -27,7 +27,7 @@ export default function TributeWall() {
         .from('tributes')
         .select('*')
         .order('created_at', { ascending: false });
-      
+
       if (data && !error) {
         setTributes(data as Tribute[]);
       }
@@ -52,7 +52,7 @@ export default function TributeWall() {
       { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
     );
     sectionRef?.current?.querySelectorAll('.reveal, .reveal-left, .reveal-right')?.forEach((el) => observer?.observe(el));
-    
+
     return () => {
       observer?.disconnect();
       supabase.removeChannel(subscription);
@@ -148,7 +148,34 @@ export default function TributeWall() {
 
         {/* Tribute form */}
         {showForm && (
-          <div className="reveal is-visible mb-12 max-w-xl">
+          <div className="reveal is-visible mb-12 flex flex-col md:flex-row gap-8 items-start">
+            
+            {/* Image column */}
+            <div className="w-full md:w-72 shrink-0 relative">
+              <div
+                className="rounded-sm overflow-hidden shadow-warm-md"
+                style={{ transform: 'rotate(-1deg)' }}>
+                <img
+                  src="assets/rainbow/Superstar.jpeg"
+                  alt="Kunal"
+                  className="w-full object-cover"
+                  style={{ aspectRatio: '3 / 4' }}
+                  onError={(e) => {
+                    const parent = e.currentTarget.parentElement!;
+                    e.currentTarget.style.display = 'none';
+                    parent.style.cssText += 'aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;background:rgba(160,82,45,0.08);';
+                    parent.innerHTML = `<span style="font-family:serif;font-size:5rem;color:rgba(160,82,45,0.25)">K</span>`;
+                  }}
+                />
+              </div>
+              <div className="tape-strip absolute -top-2 left-1/2 -translate-x-1/2" />
+              <p className="mt-3 text-center font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
+                Kunal — forever in our hearts
+              </p>
+            </div>
+
+            {/* Form column */}
+            <div className="flex-1">
             <div className="service-tile p-8 rounded-sm">
               <div className="tape-strip absolute -top-2 left-8" />
               {submitted ? (
@@ -165,65 +192,65 @@ export default function TributeWall() {
                     Your words will be cherished forever.
                   </p>
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                  <div>
-                    <h3 className="font-serif-display text-xl text-ink mb-1.5 font-normal">
-                      Share your memory of Kunal.
-                    </h3>
-                    <p className="text-sm text-ink-light font-sans font-light">
-                      Your words will become part of his living memorial.
-                    </p>
-                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                    <div>
+                      <h3 className="font-serif-display text-xl text-ink mb-1.5 font-normal">
+                        Share your memory of Kunal.
+                      </h3>
+                      <p className="text-sm text-ink-light font-sans font-light">
+                        Your words will become part of his living memorial.
+                      </p>
+                    </div>
 
-                  {/* Name */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Your name (or 'Anonymous')"
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="form-input w-full px-4 py-3 text-sm"
-                    />
-                  </div>
+                    {/* Name */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
+                        Your Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Your name (or 'Anonymous')"
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="form-input w-full px-4 py-3 text-sm"
+                      />
+                    </div>
 
-                  {/* Relationship */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
-                      Your Relationship to Kunal
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Friend, Colleague, Neighbor..."
-                      value={form.relationship}
-                      onChange={(e) => setForm({ ...form, relationship: e.target.value })}
-                      className="form-input w-full px-4 py-3 text-sm"
-                    />
-                  </div>
+                    {/* Relationship */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
+                        Your Relationship to Kunal
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Friend, Colleague, Neighbor..."
+                        value={form.relationship}
+                        onChange={(e) => setForm({ ...form, relationship: e.target.value })}
+                        className="form-input w-full px-4 py-3 text-sm"
+                      />
+                    </div>
 
-                  {/* Message */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
-                      Your Tribute
-                    </label>
-                    <textarea
-                      required
-                      rows={5}
-                      placeholder="Share a memory, a story, or a few words about Kunal..."
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="form-input w-full px-4 py-3 text-sm resize-none"
-                    />
-                  </div>
+                    {/* Message */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
+                        Your Tribute
+                      </label>
+                      <textarea
+                        required
+                        rows={5}
+                        placeholder="Share a memory, a story, or a few words about Kunal..."
+                        value={form.message}
+                        onChange={(e) => setForm({ ...form, message: e.target.value })}
+                        className="form-input w-full px-4 py-3 text-sm resize-none"
+                      />
+                    </div>
 
-                  {/* Submit */}
-                  <div className="flex items-center gap-4">
-                    <button
-                      type="submit"
-                      className="
+                    {/* Submit */}
+                    <div className="flex items-center gap-4">
+                      <button
+                        type="submit"
+                        className="
                         px-6 py-3 rounded-sm
                         bg-rust text-cream
                         text-sm font-medium font-sans
@@ -231,25 +258,25 @@ export default function TributeWall() {
                         transition-all duration-300
                         shadow-warm-sm
                       ">
-                      Submit Tribute
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowForm(false)}
-                      className="text-sm text-ink-light hover:text-ink transition-colors font-sans">
-                      Cancel
-                    </button>
-                  </div>
+                        Submit Tribute
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowForm(false)}
+                        className="text-sm text-ink-light hover:text-ink transition-colors font-sans">
+                        Cancel
+                      </button>
+                    </div>
 
-                  <p className="font-mono-label text-[10px] text-ink-light italic">
-                    Your tribute will be shared immediately with the family.
-                  </p>
-                </form>
-              )}
+                    <p className="font-mono-label text-[10px] text-ink-light italic">
+                      Your tribute will be shared immediately with the family.
+                    </p>
+                  </form>
+                )}
+              </div>
             </div>
-          </div>
+          </div>     
         )}
-
         {/* Tributes grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {tributes.map((tribute, index) => (
