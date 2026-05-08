@@ -1,11 +1,16 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { supabase } from '@/lib/supabaseClient';
+import imageCompression from 'browser-image-compression';
 
 export default function MemoryGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [galleryItems, setGalleryItems] = useState<{ src: string; caption: string }[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -17,6 +22,27 @@ export default function MemoryGallery() {
       { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
     );
     sectionRef?.current?.querySelectorAll('.reveal, .reveal-left, .reveal-right')?.forEach((el) => observer?.observe(el));
+    // Fetch images from Supabase Storage
+    const fetchImages = async () => {
+      const { data, error } = await supabase.storage.from('gallery').list();
+      if (data && !error) {
+        // Filter out empty files or folders (usually .emptyFolderPlaceholder)
+        const files = data.filter(file => file.name && file.name !== '.emptyFolderPlaceholder');
+        
+        const items = files.map(file => {
+          const { data: publicUrlData } = supabase.storage.from('gallery').getPublicUrl(file.name);
+          return {
+            src: publicUrlData.publicUrl,
+            caption: 'A precious memory', // We could potentially store captions in a DB table, but for now just a generic caption
+          };
+        });
+        
+        // Sort newest first roughly by putting newly fetched ones at top, or just reverse
+        setGalleryItems(items.reverse());
+      }
+    };
+    fetchImages();
+
     return () => observer?.disconnect();
   }, []);
 
@@ -95,6 +121,48 @@ export default function MemoryGallery() {
       date: '',
     },
   ];
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      // Compress image to max 5MB
+      const options = {
+        maxSizeMB: 5,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true
+      };
+      
+      const compressedFile = await imageCompression(file, options);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from('gallery')
+        .upload(fileName, compressedFile);
+
+      if (error) throw error;
+
+      // Add to gallery instantly
+      const { data: publicUrlData } = supabase.storage.from('gallery').getPublicUrl(fileName);
+      setGalleryItems(prev => [{ src: publicUrlData.publicUrl, caption: 'A precious memory' }, ...prev]);
+      
+      alert('Photo uploaded successfully! Thank you for sharing.');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('There was an error uploading your photo. Please try again.');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = ''; // reset input
+    }
+  };
+
+  // Empty placeholder while loading or if no images
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -194,6 +262,13 @@ export default function MemoryGallery() {
                 Every memory matters.
               </p>
             </div>
+            <input 
+              type="file" 
+              accept="image/*" 
+              className="hidden" 
+              ref={fileInputRef} 
+              onChange={handleFileChange} 
+            />
             <button
               className="
                 inline-flex items-center gap-2 mt-2
@@ -204,18 +279,22 @@ export default function MemoryGallery() {
                 transition-all duration-300
                 shadow-warm-md
                 group
+                disabled:opacity-50 disabled:cursor-not-allowed
               "
-              onClick={() => alert('Upload functionality coming soon — will be connected with Supabase!')}
+              onClick={handleUploadClick}
+              disabled={isUploading}
             >
-              Upload Memories
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-300 group-hover:translate-y-[-2px]">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" strokeLinecap="round" strokeLinejoin="round" />
-                <polyline points="17 8 12 3 7 8" strokeLinecap="round" strokeLinejoin="round" />
-                <line x1="12" y1="3" x2="12" y2="15" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              {isUploading ? 'Uploading...' : 'Upload Memories'}
+              {!isUploading && (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-300 group-hover:translate-y-[-2px]">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" strokeLinecap="round" strokeLinejoin="round" />
+                  <polyline points="17 8 12 3 7 8" strokeLinecap="round" strokeLinejoin="round" />
+                  <line x1="12" y1="3" x2="12" y2="15" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
             </button>
             <p className="font-mono-label text-[10px] text-ink-light italic mt-1">
-              Supabase integration coming soon
+              Max file size: 5MB. Images are compressed automatically.
             </p>
           </div>
         </div>

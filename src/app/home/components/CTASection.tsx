@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', relationship: '', message: '' });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,9 +22,25 @@ export default function CTASection() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (!form.name || !form.message) return;
+
+    const { error } = await supabase.from('family_messages').insert([
+      {
+        name: form.name,
+        email: form.email,
+        relationship: form.relationship || 'Friend',
+        message: form.message,
+      }
+    ]);
+
+    if (!error) {
+      setSubmitted(true);
+    } else {
+      console.error('Error submitting tribute:', error);
+      alert('There was an error submitting your message. Please try again.');
+    }
   };
 
   return (
@@ -179,14 +196,27 @@ export default function CTASection() {
                   {/* Email */}
                   <div className="flex flex-col gap-1.5">
                     <label className="font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
-                      Email address
+                      Email address (Optional)
                     </label>
                     <input
                       type="email"
-                      required
                       placeholder="your@email.com"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      className="form-input w-full px-4 py-3 text-sm"
+                    />
+                  </div>
+
+                  {/* Relationship */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
+                      Your Relationship to Kunal
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Friend, Colleague, Family..."
+                      value={form.relationship}
+                      onChange={(e) => setForm({ ...form, relationship: e.target.value })}
                       className="form-input w-full px-4 py-3 text-sm"
                     />
                   </div>
