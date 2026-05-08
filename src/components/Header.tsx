@@ -15,8 +15,8 @@ export default function Header() {
     return (
         <header
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${scrolled
-                    ? 'bg-vellum/90 backdrop-blur-md border-b border-ink/8 shadow-warm-sm'
-                    : 'bg-transparent'
+                ? 'bg-vellum/90 backdrop-blur-md border-b border-ink/8 shadow-warm-sm'
+                : 'bg-transparent'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
@@ -36,10 +36,11 @@ export default function Header() {
 
                 {/* Desktop nav */}
                 <nav className="hidden md:flex items-center gap-8">
+
                     {[
                         { label: 'Memorial', href: '#' },
                         { label: 'Gallery', href: '#gallery' },
-                        { label: 'Tributes', href: '#tributes' },
+                        { label: ' Tributes', href: '#tributes' },
                     ]?.map((item) => (
                         <a
                             key={item?.label}
@@ -49,18 +50,21 @@ export default function Header() {
                             {item?.label}
                         </a>
                     ))}
+
                     <a
-                        href="#tributes"
+                        href="https://milaap.org/fundraisers/support-shivani-janjua?utm_source=shorturl"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="
-              text-sm font-medium px-5 py-2.5 rounded-sm
-              bg-rust text-cream
-              hover:bg-rust-light
-              transition-all duration-300
-              shadow-warm-sm
-              font-sans
-            "
+                            text-sm font-medium px-5 py-2.5 rounded-sm
+                            bg-rose-700 text-cream
+                            hover:bg-rose-600
+                            transition-all duration-300
+                            shadow-sm
+                            font-sans
+                        "
                     >
-                        Share a Memory
+                        Support the Family
                     </a>
                 </nav>
 
@@ -104,11 +108,13 @@ export default function Header() {
                         </a>
                     ))}
                     <a
-                        href="#tributes"
+                                                href="https://milaap.org/fundraisers/support-shivani-janjua?utm_source=shorturl"
+                        target="_blank"
+                        rel="noopener noreferrer"   
                         onClick={() => setMenuOpen(false)}
-                        className="text-sm font-medium px-5 py-3 rounded-sm bg-rust text-cream text-center hover:bg-rust-light transition-all duration-300 font-sans"
+                        className="text-sm font-medium px-5 py-3 rounded-sm bg-rose-700 text-cream text-center hover:bg-rose-600 transition-all duration-300 font-sans"
                     >
-                        Share a Memory
+                        Support the Family
                     </a>
                 </div>
             </div>
