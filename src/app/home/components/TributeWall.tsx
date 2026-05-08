@@ -148,7 +148,34 @@ export default function TributeWall() {
 
         {/* Tribute form */}
         {showForm && (
-          <div className="reveal is-visible mb-12 max-w-xl">
+          <div className="reveal is-visible mb-12 flex flex-col md:flex-row gap-8 items-start">
+            
+            {/* Image column */}
+            <div className="w-full md:w-72 shrink-0 relative">
+              <div
+                className="rounded-sm overflow-hidden shadow-warm-md"
+                style={{ transform: 'rotate(-1deg)' }}>
+                <img
+                  src="assets/rainbow/Superstar.jpeg"
+                  alt="Kunal"
+                  className="w-full object-cover"
+                  style={{ aspectRatio: '3 / 4' }}
+                  onError={(e) => {
+                    const parent = e.currentTarget.parentElement!;
+                    e.currentTarget.style.display = 'none';
+                    parent.style.cssText += 'aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;background:rgba(160,82,45,0.08);';
+                    parent.innerHTML = `<span style="font-family:serif;font-size:5rem;color:rgba(160,82,45,0.25)">K</span>`;
+                  }}
+                />
+              </div>
+              <div className="tape-strip absolute -top-2 left-1/2 -translate-x-1/2" />
+              <p className="mt-3 text-center font-mono-label text-[10px] text-ink-light tracking-memoir uppercase">
+                Kunal — forever in our hearts
+              </p>
+            </div>
+
+            {/* Form column */}
+            <div className="flex-1">
             <div className="service-tile p-8 rounded-sm">
               <div className="tape-strip absolute -top-2 left-8" />
               {submitted ? (
@@ -165,16 +192,6 @@ export default function TributeWall() {
                     Your words will be cherished forever.
                   </p>
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                  <div>
-                    <h3 className="font-serif-display text-xl text-ink mb-1.5 font-normal">
-                      Share your memory of Kunal.
-                    </h3>
-                    <p className="text-sm text-ink-mid font-sans font-light">
-                      Your words will be cherished forever.
-                    </p>
-                  </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                     <div>
