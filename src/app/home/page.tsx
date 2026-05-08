@@ -20,6 +20,7 @@ export default function HomePage() {
 
             <main>
                 {/* 1. Hero — Memorial tribute to Kunal Janjua with photos */}
+                
                 <HeroSection />
 
                 {/* 2. Interstitial breath — a reflective pause */}

@@ -94,10 +94,11 @@ export default function TestimonialMosaicOne() {
               </p>
               <div className="space-y-2.5">
                 {[
-                  { year: '—', note: 'Born with courage in his soul' },
-                  { year: '—', note: 'A proud superstar fighter' },
-                  { year: '—', note: 'Touched every life around him' },
-                  { year: '∞', note: 'Forever in our hearts' }]?.
+                  { year: '1993', note: 'Arrived with courage already in his soul' },
+                  { year: '2022', note: 'Found a wonderful partner for life' },
+                  { year: '2023', note: 'Welcomed a joyful son into the world' },
+                  { year: '∞', note: 'Bid adieu — forever alive in our hearts' }
+                ]?.
                   map((item) =>
                     <div key={item?.note} className="flex items-start gap-3">
                       <span className="font-mono-label text-xs text-rust shrink-0 w-10">{item?.year}</span>

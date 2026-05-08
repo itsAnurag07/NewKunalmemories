@@ -24,38 +24,74 @@ export default function MemoryGallery() {
   const galleryItems = [
     {
       type: 'image' as const,
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop',
-      caption: 'Share your photos of Kunal here',
+      src: '/assets/rainbow/WE2.png',
+      caption: 'We had our share of good times together',
       date: '',
     },
     {
       type: 'image' as const,
-      src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop',
-      caption: 'Memories with friends and family',
+      src: '/assets/rainbow/Vintage.JPG',
+      caption: 'Friends and family',
+      date: '',
+    },
+        {
+      type: 'image' as const,
+      src: '/assets/rainbow/Superstar.jpeg',
+      caption: 'Yaar tera Superstar',
       date: '',
     },
     {
       type: 'image' as const,
-      src: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=600&h=400&fit=crop',
+      src: '/assets/rainbow/CatchMeIfYouCan.jpeg',
+      caption: 'Catch Me If You Can',
+      date: '',
+    },
+    {
+      type: 'image' as const,
+      src: '/assets/rainbow/FindMeIfYouCan.jpeg',
+      caption: 'Find Me If You Can',
+      date: '',
+    },
+    {
+      type: 'image' as const,
+      src: '/assets/images/kunal2.jpeg',
+      caption: 'Wandering on the roads',
+      date: '',
+    },
+    {
+      type: 'image' as const,
+      src: '/assets/images/kunal3.jpeg',
       caption: 'Moments that matter',
       date: '',
     },
     {
       type: 'image' as const,
-      src: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&h=400&fit=crop',
+      src: '/assets/images/kunal4.jpeg',
       caption: 'Celebrating a life well lived',
       date: '',
     },
     {
       type: 'image' as const,
-      src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop',
+      src: '/assets/rainbow/WE3.jpeg',
       caption: 'Every photo tells a story',
       date: '',
     },
     {
       type: 'image' as const,
-      src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop',
+      src: '/assets/images/kunal6.jpeg',
       caption: 'Together in spirit',
+      date: '',
+    },
+    {
+      type: 'image' as const,
+      src: '/assets/rainbow/KalHoNaHo.jpeg',
+      caption: 'Kal Ho Na Ho',
+      date: '',
+    },
+    {
+      type: 'image' as const,
+      src: '/assets/rainbow/ShyShyLemmeTry.jpeg',
+      caption: 'Shy Shy Lemme Try',
       date: '',
     },
   ];
@@ -78,7 +114,7 @@ export default function MemoryGallery() {
       style={{ background: 'linear-gradient(to bottom, #E2D4B4, #D8C9A8)' }}>
 
       {/* Grain */}
-      <div className="grain-overlay" />
+      {/* <div className="grain-overlay" /> */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-ink/12 to-transparent" />
 
       {/* Ambient glow */}

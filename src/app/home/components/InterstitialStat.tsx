@@ -36,7 +36,16 @@ export default function InterstitialStat({
       style={{ background: `linear-gradient(to bottom, ${bgFrom}, ${bgTo})` }}
     >
       {/* Grain */}
-      <div className="grain-overlay" />
+                  <div
+              className="absolute -inset-3 rounded-sm overflow-hidden"
+            >
+              <img
+                src="/assets/images/FIOH.png"
+                alt=""
+                className="w-full h-full object-cover blur-xl opacity-40"
+              />
+              <div className="absolute inset-0 border border-[rgba(46,42,37,0.12)] rounded-sm" />
+            </div>
 
       {/* Decorative horizontal rule */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-ink/15 to-transparent" />

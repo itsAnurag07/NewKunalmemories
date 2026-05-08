@@ -138,7 +138,7 @@ export default function TributeWall() {
 
         {/* Tribute form */}
         {showForm && (
-          <div className="reveal mb-12 max-w-xl">
+          <div className="mb-12 max-w-xl">
             <div className="service-tile p-8 rounded-sm">
               <div className="tape-strip absolute -top-2 left-8" />
               {submitted ? (
