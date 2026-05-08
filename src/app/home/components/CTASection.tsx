@@ -82,13 +82,6 @@ export default function CTASection() {
               </h2>
             </div>
 
-            <div className="reveal reveal-delay-2">
-              <p className="text-base text-ink-mid leading-relaxed font-sans font-light max-w-md">
-                Whether it's a story, a favorite memory, a few words of love, or simply
-                a message to his family — your tribute will help keep Kunal's spirit
-                alive in the hearts of those who loved him most.
-              </p>
-            </div>
 
             {/* Farewell info card */}
             <div
@@ -109,6 +102,9 @@ export default function CTASection() {
                     <p className="text-sm font-medium text-ink font-sans leading-snug">
                       Farewell Gathering for Kunal
                     </p>
+                       <p className="mt-2 font-semibold text-slate-900">
+                      Tuesday 12th May 2026 · Lawnswood Crematorium, Leeds
+                    </p>
                     <p className="font-mono-label text-[10px] text-ink-light mt-1">
                       A celebration of his life & spirit
                     </p>
@@ -118,7 +114,6 @@ export default function CTASection() {
                   {[
                     'Share your favorite memory of Kunal',
                     'Say a few words or give a small speech',
-                    'Bring a photo or memento to share',
                     'Light a candle in his honor',
                     'Help his family carry his memories forward',
                   ].map((step, i) => (
@@ -132,6 +127,32 @@ export default function CTASection() {
                     </div>
                   ))}
                 </div>
+                <div className="max-w-xl mx-auto rounded-lg border border-slate-200 bg-white/80 shadow-sm p-5 text-sm text-slate-800 space-y-1 mt-2">
+                
+
+                  <p className="text-slate-700">
+                     Live stream details are provided below for those unable to attend the service in person.
+                  </p>
+                  <div className="pt-1 border-t border-slate-200 space-y-1">
+                   
+                    <a
+                      href="https://watch.obitus.com"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm font-medium text-sky-700 hover:underline"
+                    >
+                     https://watch.obitus.com
+                    </a>
+                    <p className="text-xs text-slate-600">
+                      <span className="font-semibold">Username:</span> seho6302
+                    </p>
+                    <p className="text-xs text-slate-600">
+                      <span className="font-semibold">Password / PIN:</span> 794913
+                    </p>
+                  </div>
+                </div>
+
+
               </div>
             </div>
 
